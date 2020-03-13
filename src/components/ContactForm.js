@@ -6,8 +6,10 @@ const ContactForm = () => {
   const { register, errors, handleSubmit, reset } = useForm({
     mode: "onBlur"
   });
-  const onSubmit = data => {
+  const onSubmit = (data, e) => {
     setData(data);
+    e.target.reset();
+
   };
 
   return (
@@ -59,16 +61,7 @@ const ContactForm = () => {
             {JSON.stringify(data, null, 2)}
           </pre>
         )}
-        <input type="submit" 
-          onClick={() => {
-            reset({
-              firstName: "",
-              lastName: "",
-              email: "",
-              message: ""
-            });
-          }}
-        />
+        <input type="submit" />
       </form>
     </div>
   );

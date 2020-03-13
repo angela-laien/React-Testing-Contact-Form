@@ -7,28 +7,43 @@ test("renders correctly", () => {
 });
 
 test("contact form add new contacts to contact list", () => {
-    const {getByLabelText} = render(<ContactForm />);
+    const {getByLabelText, findByTestId, findByText} = render(<ContactForm />);
 
-    const firstName = getByLabelText(/first name*/i);
-    const lastName = getByLabelText(/last name*/i);
-    const email = getByLabelText(/email*/i);
-    const message = getByLabelText(/message/i);
+    const firstNameInput = getByLabelText(/first name*/i);
+    const lastNameInput = getByLabelText(/last name*/i);
+    const emailInput = getByLabelText(/email*/i);
+    const messageInput = getByLabelText(/message/i);
 
-    expect(firstName).toBeInTheDocument();
-    expect(lastName).toBeInTheDocument();
-    expect(email).toBeInTheDocument();
-    expect(message).toBeInTheDocument();
+    expect(firstNameInput).toBeInTheDocument();
+    expect(firstNameInput.placeholder).toBe("First Name");
+    expect(lastNameInput).toBeInTheDocument();
+    expect(lastNameInput.placeholder).toBe("Last Name");
+    expect(emailInput).toBeInTheDocument();
+    expect(messageInput).toBeInTheDocument();
 
-    fireEvent.change(firstName, {
+    fireEvent.change(firstNameInput, {
         target:{name:"firstName", value:"Liz"}
     });
-    fireEvent.change(lastName, {
+    fireEvent.change(lastNameInput, {
         target:{name:"lastName", value:"Anderson"}
     });
-    fireEvent.change(email, {
+    fireEvent.change(emailInput, {
         target:{name:"email", value:"laienxie@gmail.com"}
     });
-    fireEvent.change(message, {
+    fireEvent.change(messageInput, {
         target:{name:"message", value:"Good Afternoon"}
     });
+
+    findByTestId('submit').then(() => {
+        fireEvent.click();
+    })
+
+    const contacts = findByText(
+        `{
+            "firstName": "Liz",
+            "lastName": "Anderson",
+            "email": "laienxie@gmail.com",
+            "message": "Good Afternoon"
+        }`
+    )
 });
